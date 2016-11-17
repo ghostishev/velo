@@ -1,0 +1,11 @@
+{% extends 'velo/base.html' %}
+{% block content %}
+
+        {% for shop in shops %}
+            <div class="custom_page">
+                <div class="page_header">{{ shop.name }}</div>
+                {{ shop.about_shop|safe|escape }}
+            </div>
+        {% endfor %}
+
+{% endblock %}

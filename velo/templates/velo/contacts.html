@@ -1,0 +1,12 @@
+{% extends 'velo/base.html' %}
+{% block content %}
+
+        <div class="custom_page">
+            <div class="page_header">Контакти керівників велоклубу</div>
+
+            {% for contact in contacts %}
+                {{ contact.name }}, {{ contact.tel }}<br>
+            {% endfor %}
+        </div>
+
+{% endblock %}

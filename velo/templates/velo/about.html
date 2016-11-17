@@ -1,0 +1,8 @@
+{% extends 'velo/base.html' %}
+{% block content %}
+
+        <div class="custom_page">
+            <div class="page_header">Про клуб</div>
+            {{ content.about_us|safe|escape }}
+        </div>
+{% endblock %}

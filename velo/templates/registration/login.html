@@ -1,0 +1,12 @@
+{% extends 'velo/base.html' %}
+{% block content %}
+    <div class="custom_page">
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+    <button type="submit">Вхід</button>
+    </form>
+    </div>
+
+{% endblock %}

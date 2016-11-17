@@ -1,0 +1,13 @@
+{% extends 'velo/base.html' %}
+{% block content %}
+
+        <div class="custom_page">
+            <div class="page_header">Пройдені маршрути на покатушках нашого велоклубу</div>
+            <ul>
+                {% for trip in trips %}
+                    <li><a href="{% url 'trip' trip.gpsies_id %}">{{ trip.trip_name|safe|escape }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+{% endblock %}

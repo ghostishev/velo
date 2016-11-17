@@ -1,0 +1,69 @@
+{% extends 'velo/base.html' %}
+{% block content %}
+
+    <div class="custom_page">
+        <div class="page_header">Карти для навігаторів</div>
+
+        <table class="table table-hover">
+            <tr>
+                <th>Опис</th>
+                <th>Посилання</th>
+                <th>Розмір файлу</th>
+                <th>Завантажень</th>
+                <th>Дата оновлення</th>
+            </tr>
+
+            <tr>
+                <th><big>Garmin:</big></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for garmin in navfiles.garmin %}
+                <tr>
+                    <td>{{ garmin.title }}</td>
+                    <!-- <a href="/media/osm/{{garmin.filename}}">{{garmin.filename}}</a> -->
+                    <td><a href="javascript:download('{{ garmin.filename }}')"><i
+                            class="icon-download-alt"></i> {{ garmin.filename }}</a></td>
+                    <td>{{ garmin.size }}</td>
+                    <td>{{ garmin.downloads }}</td>
+                    <td>{{ garmin.date }}</td>
+                </tr>
+            {% endfor %}
+
+            <tr>
+                <th><big>Navitel:</big></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for navitel in navfiles.navitel %}
+                <tr>
+                    <td>{{ navitel.title }}</td>
+                    <!-- <a href="/media/osm/{{navitel.filename}}">{{navitel.filename}}</a> -->
+                    <td><a href="javascript:download('{{ navitel.filename }}')"><i
+                            class="icon-download-alt"></i> {{ navitel.filename }}</a></td>
+                    <td>{{ navitel.size }}</td>
+                    <td>{{ navitel.downloads }}</td>
+                    <td>{{ navitel.date }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <hr>
+        Автор стилю Garmin-Stranger - MaxVasilev. Детальніше про конвертацію: <a
+            href="http://forum.openstreetmap.org/viewtopic.php?id=19897">на форумі OSM</a>.
+    </div>
+
+{% endblock %}
+
+<iframe id="frame" style="display:none"></iframe>
+
+<script type="text/javascript">
+function download(filename)
+{
+    var ifrm = document.getElementById("frame");
+    ifrm.src = 'http://velo.kr.ua/download/' + filename;
+}
+</script>

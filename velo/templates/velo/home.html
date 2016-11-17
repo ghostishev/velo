@@ -1,0 +1,36 @@
+{% extends 'velo/base.html' %}
+{% block content %}
+<!-- content -->
+
+    <div id="content">
+
+{% for article in news %}
+<div class="velonews" >
+    <div class="newstitle" >{{article.name}}</div>
+    <div class="newsmaker">{{article.user}}</div>
+    <div class="newsdate">{{article.date}}</div>
+    <div class="news_content">
+        {{ article.content|safe|escape }}
+    </div>
+</div>
+{% endfor %}
+</div>
+<div class="news_pagination">
+    <ul class="pager">
+        {% if navigation.has_previous %}
+            <li class="previous"><a href="/page/{{ navigation.previous_page }}">&larr; Новіші записи</a></li>
+        {% else %}
+            <li class="previous disabled"><a>&larr; Новіші записи</a></li>
+        {% endif %}
+
+
+        {% if navigation.has_next %}
+            <li class="next"><a href="/page/{{ navigation.next_page }}">Старіші записи &rarr;</a></li>
+        {% else %}
+            <li class="next disabled"><a>Старіші записи &rarr;</a></li>
+        {% endif %}
+    </ul>
+</div>
+		</div>
+
+{% endblock %}
