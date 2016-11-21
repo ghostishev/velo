@@ -4,7 +4,7 @@
 <div id="djangobbwrap">
 <div id="djangobbindex" class="djangobb">
 <div id="brdheader" class="block">
-	<div class="box">
+	<div class="djangobb_box">
 		<div id="brdtitle" class="inbox">
 			<h1><span><a href="{% url 'djangobb:index' %}">{{ forum_settings.HEADER|safe }}</a></span></h1>
 			<p><span>{{ forum_settings.TAGLINE|safe }}</span></p>
@@ -56,7 +56,7 @@
 {% if forum_settings.NOTICE %}
 	<div id="announce" class="block">
 		<h2><span>{% trans "Notice" %}</span></h2>
-		<div class="box">
+		<div class="djangobb_box">
 			<div class="inbox">
 				<div>{{ forum_settings.NOTICE|safe }}</div>
 			</div>

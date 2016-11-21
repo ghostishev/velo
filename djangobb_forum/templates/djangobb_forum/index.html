@@ -3,103 +3,106 @@
 {% load i18n %}
 
 {% block extra_meta %}
-<script type="text/javascript" src="{{ STATIC_URL }}djangobb_forum/js/jquery.cookie.js"></script>
-<script type="text/javascript">
+    <script type="text/javascript" src="{{ STATIC_URL }}djangobb_forum/js/jquery.cookie.js"></script>
+    <script type="text/javascript">
 
-	function set_collapser(cat_id) {
-		category_body_id = "category_body_" + cat_id;
-		if($.cookie(category_body_id)){
-			item_id = "#" + category_body_id;
-			head_id = item_id.replace("body", "head");
-			$(head_id).addClass("collapsed");
-			$(item_id).hide()
-		}
-	}
-	$(document).ready(function(){
-		$("a.toggle").click(function(){
-			header_id = $(this).parent().attr('id');
-			body_id = header_id.replace("head", "body");
-			item_id = '#' + body_id
-			if ($(this).parent().hasClass("collapsed")){
-				$(this).parent().removeClass("collapsed");
-				$.cookie(body_id, '');
-			} else {
-				$(this).parent().addClass("collapsed");
-				$.cookie(body_id, 'collapsed');
-			}
-			$(item_id).slideToggle("slow");
-		});
-	{% for iter in cats %}
-		set_collapser({{ iter.id }})
-	{% endfor %}
-	});
-</script>
+        function set_collapser(cat_id) {
+            category_body_id = "category_body_" + cat_id;
+            if ($.cookie(category_body_id)) {
+                item_id = "#" + category_body_id;
+                head_id = item_id.replace("body", "head");
+                $(head_id).addClass("collapsed");
+                $(item_id).hide()
+            }
+        }
+        $(document).ready(function () {
+            $("a.toggle").click(function () {
+                header_id = $(this).parent().attr('id');
+                body_id = header_id.replace("head", "body");
+                item_id = '#' + body_id
+                if ($(this).parent().hasClass("collapsed")) {
+                    $(this).parent().removeClass("collapsed");
+                    $.cookie(body_id, '');
+                } else {
+                    $(this).parent().addClass("collapsed");
+                    $.cookie(body_id, 'collapsed');
+                }
+                $(item_id).slideToggle("slow");
+            });
+            {% for iter in cats %}
+                set_collapser({{ iter.id }})
+            {% endfor %}
+        });
+    </script>
 {% endblock %}
 
 {% block content %}
-<div id="idx1" class="blocktable">
-{% for iter in cats %}
-	<h2 id="category_head_{{ iter.id }}">
-		<a class="toggle" href="#">Toggle shoutbox</a>
-		<span>
-			{{ iter.cat }}
-		</span>
-	</h2>
-	<div class="box" id="category_body_{{ iter.id }}">
-		<div class="inbox">
-			<table cellspacing="0">
-				<thead>
-					<tr>
-						<th class="tcl" scope="col">{% trans "Forum" %}</th>
-						<th class="tc2" scope="col">{% trans "Topics" %}</th>
-						<th class="tc3" scope="col">{% trans "Posts" %}</th>
-						<th class="tcr" scope="col">{% trans "Last post" %}</th>
-					</tr>
-				</thead>
-				<tbody>
-				{% for forum in iter.forums %}
-					{% include 'djangobb_forum/forum_row.html' %}
-				{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
-{% endfor %}
-</div>
+    <div id="idx1" class="blocktable">
+        {% for iter in cats %}
+            <div class="djangobb_box" id="category_body_{{ iter.id }}">
+                <div class="djangobb_box_name"> {{ iter.cat }} </div>
+                {% if iter.cat.for_club_only and user.forum_profile.in_club or not iter.cat.for_club_only %}
+                    <table class="table table-bordered inbox" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th class="tcl" scope="col">Форум</th>
+                            <th class="tc2" scope="col">Тем</th>
+                            <th class="tc3" scope="col">Повідомлень</th>
+                            <th class="tcr" scope="col">Останнє повідомлення</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for forum in iter.forums %}
+                            {% include 'djangobb_forum/forum_row.html' %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <center><i class="icon-lock icon-4x"></i> <br> Ви не маєте доступу до цієї категорії.</center>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="djangobb_box">
+        <table>
+            <tr>
+                <td aling="left">
+                    <p>Останній зареєстрований користувач: {{ last_user|profile_link }}</p>
+                    <p>Зараз зареєстрованих відвідувачів: <strong>{{ online_count }}</strong></p>
+                    <p>Зараз гостей: <strong>{{ guest_count }}</strong></p>
+                </td>
 
-<div id="brdstats" class="block">
-	<h2><span>{% trans "Board information" %}</span></h2>
-	<div class="box">
-		<div class="inbox">
-			<dl class="conr">
-				<dt><strong>{% trans "Board statistics" %}</strong></dt>
-				<dd>{% trans "Total number of registered users:" %} <strong>{{ users }}</strong></dd>
-				<dd>{% trans "Total number of topics:" %} <strong>{{ topics }}</strong></dd>
-				<dd>{% trans "Total number of posts:" %} <strong>{{ posts }}</strong></dd>
-			</dl>
-			<dl class="conl">
-				<dt><strong>{% trans "User information" %}</strong></dt>
-				<dd>{% trans "Newest registered user:" %} {{ last_user|profile_link }}</dd>
-				<dd>{% trans "Registered users online:" %} <strong>{{ online_count }}</strong></dd>
-				<dd>{% trans "Guests online:" %} <strong>{{ guest_count }}</strong></dd>
-			</dl>
-            {% if online_count %}
-                <dl id="onlinelist" class= "clearb">
-                    <dt><strong>{% trans "Online:" %} </strong></dt>
-                    {% for online in users_online %}
-                        <dd>{{ online|profile_link }}</dd>
-                    {% endfor %}
-                </dl>
-            {% endif %}
-		</div>
-	</div>
-</div>
+                <td align="right">
+                    <p>Всього зареєстрованих користувачів: <strong>{{ users }}</strong></p>
+                    <p>Всього тем: <strong>{{ topics }}</strong></p>
+                    <p>Всього повідомлень: <strong>{{ posts }}</strong></p>
+                </td>
+            </tr>
+        </table>
+        {% if online_count %}
+            <table>
+                <td>
+                    <p><strong>Зараз на сайті: </strong>
+                        {% for online in users_online %}
+                            {{ online|profile_link }}
+                        {% endfor %}
+                    </p>
+                </td>
+            </table>
+        {% endif %}
+    </div>
+
+
+
+
+
+
 {% endblock %}
 
 {% block lofi %}
-{% if forum_settings.LOFI_SUPPORT %}
-    <p class="lofi">
-        <a href="{% url 'djangobb:lofi_index' %}">Lo-Fi Version</a>
-    </p>
-{% endif %}
+    {% if forum_settings.LOFI_SUPPORT %}
+        <p class="lofi">
+            <a href="{% url 'djangobb:lofi_index' %}">Lo-Fi Version</a>
+        </p>
+    {% endif %}
 {% endblock %}

@@ -1,6 +1,7 @@
 import os
 import datetime
 from django.shortcuts import render_to_response, render
+from django.http import JsonResponse
 from velo.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from velokrua.settings import NEWS_ON_PAGE, NAVFILES_LOC
@@ -37,9 +38,10 @@ def home(request, page=None):
     if navigation['has_next']:
         navigation['next_page'] = current_page.next_page_number()
 
-    return render_to_response('velo/home.html',
-                              {'request': request, 'page_title': u'Кіровоградський велоклуб "Там Де Ми"', 'news': news,
-                               'navigation': navigation})
+    context = {'request': request, 'page_title': u'Кіровоградський велоклуб "Там Де Ми"', 'news': news,
+               'navigation': navigation}
+
+    return render_to_response('velo/home.html', context)
 
 
 def online_map(request):

@@ -13,8 +13,10 @@
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'bootstrap/Font-Awesome/css/font-awesome.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/velo.css' %}"/>
+    {% block header %}
+    {% endblock %}
 
-    <title>{{ page_title }}</title>
+    <title>{{ page_title }}{% block title %}{% endblock %}</title>
 
     <!-- Google analytics -->
     <script type="text/javascript">
@@ -40,7 +42,7 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li><a href="{% url 'home' %}"><i class="icon-home"></i> Головна</a></li>
-                    <li><a href="{% url 'home' %}"><i class="icon-comment"></i> Форум
+                    <li><a href="{% url 'djangobb:index' %}"><i class="icon-comment"></i> Форум
                         <!--<span class="badge badge-inverse">8</span>--></a></li>
                     <li><a href="{% url 'trip' %}"><i class="icon-road"></i> Маршрути</a></li>
                     <li><a href="{% url 'calendar' %}"><i class="icon-calendar"></i> Календар</a></li>
@@ -136,7 +138,7 @@
 </header>
 <div class="container" id="page">
     <section>
-        {% block content %}
+        {% block main %}
         {% endblock %}
     </section>
 </div>
