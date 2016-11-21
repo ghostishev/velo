@@ -21,7 +21,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 
-from haystack.query import SearchQuerySet, SQ
+# from haystack.query import SearchQuerySet, SQ
 
 from djangobb_forum import settings as forum_settings
 from djangobb_forum.forms import AddPostForm, EditPostForm, UserSearchForm, \
@@ -35,6 +35,7 @@ from djangobb_forum.util import build_form, smiles, convert_text_to_html, get_pa
 
 
 User = get_user_model()
+
 
 def index(request, full=True):
     users_cached = cache.get('djangobb_users_online', {})
@@ -208,58 +209,59 @@ def search(request):
 
         base_url = "?action=show_user&user_id=%s&show_as=" % user_id
     elif action == 'search':
-        form = PostSearchForm(request.GET)
-        if not form.is_valid():
-            return _render_search_form(form)
-
-        keywords = form.cleaned_data['keywords']
-        author = form.cleaned_data['author']
-        forum = form.cleaned_data['forum']
-        search_in = form.cleaned_data['search_in']
-        sort_by = form.cleaned_data['sort_by']
-        sort_dir = form.cleaned_data['sort_dir']
-
-        query = SearchQuerySet().models(Post)
-
-        if author:
-            query = query.filter(author__username=author)
-
-        if forum != '0':
-            query = query.filter(forum__id=forum)
-
-        if keywords:
-            if search_in == 'all':
-                query = query.filter(SQ(topic=keywords) | SQ(text=keywords))
-            elif search_in == 'message':
-                query = query.filter(text=keywords)
-            elif search_in == 'topic':
-                query = query.filter(topic=keywords)
-
-        order = {'0': 'created',
-                 '1': 'author',
-                 '2': 'topic',
-                 '3': 'forum'}.get(sort_by, 'created')
-        if sort_dir == 'DESC':
-            order = '-' + order
-
-        post_pks = query.values_list("pk", flat=True)
-
-        if not show_as_posts:
-            # TODO: We have here a problem to get a list of topics without double entries.
-            # Maybe we must add a search index over topics?
-
-            # Info: If whoosh backend used, setup HAYSTACK_ITERATOR_LOAD_PER_QUERY
-            #    to a higher number to speed up
-            context["topics"] = topics.filter(posts__in=post_pks).distinct()
-        else:
-            # FIXME: How to use the pre-filtered query from above?
-            posts = posts.filter(pk__in=post_pks).order_by(order)
-            context["posts"] = posts
-
-        get_query_dict = request.GET.copy()
-        get_query_dict.pop("show_as")
-        base_url = "?%s&show_as=" % get_query_dict.urlencode()
-        _generic_context = False
+        pass
+        # form = PostSearchForm(request.GET)
+        # if not form.is_valid():
+        #     return _render_search_form(form)
+        #
+        # keywords = form.cleaned_data['keywords']
+        # author = form.cleaned_data['author']
+        # forum = form.cleaned_data['forum']
+        # search_in = form.cleaned_data['search_in']
+        # sort_by = form.cleaned_data['sort_by']
+        # sort_dir = form.cleaned_data['sort_dir']
+        #
+        # query = SearchQuerySet().models(Post)
+        #
+        # if author:
+        #     query = query.filter(author__username=author)
+        #
+        # if forum != '0':
+        #     query = query.filter(forum__id=forum)
+        #
+        # if keywords:
+        #     if search_in == 'all':
+        #         query = query.filter(SQ(topic=keywords) | SQ(text=keywords))
+        #     elif search_in == 'message':
+        #         query = query.filter(text=keywords)
+        #     elif search_in == 'topic':
+        #         query = query.filter(topic=keywords)
+        #
+        # order = {'0': 'created',
+        #          '1': 'author',
+        #          '2': 'topic',
+        #          '3': 'forum'}.get(sort_by, 'created')
+        # if sort_dir == 'DESC':
+        #     order = '-' + order
+        #
+        # post_pks = query.values_list("pk", flat=True)
+        #
+        # if not show_as_posts:
+        #     # TODO: We have here a problem to get a list of topics without double entries.
+        #     # Maybe we must add a search index over topics?
+        #
+        #     # Info: If whoosh backend used, setup HAYSTACK_ITERATOR_LOAD_PER_QUERY
+        #     #    to a higher number to speed up
+        #     context["topics"] = topics.filter(posts__in=post_pks).distinct()
+        # else:
+        #     # FIXME: How to use the pre-filtered query from above?
+        #     posts = posts.filter(pk__in=post_pks).order_by(order)
+        #     context["posts"] = posts
+        #
+        # get_query_dict = request.GET.copy()
+        # get_query_dict.pop("show_as")
+        # base_url = "?%s&show_as=" % get_query_dict.urlencode()
+        # _generic_context = False
 
     if _generic_context:
         if show_as_posts:

@@ -45,7 +45,7 @@ class ForumTimeNode(template.Node):
         self.time = template.Variable(time)
 
     def render(self, context):
-        time = timezone.localtime(self.time.resolve(context))
+        time = self.time.resolve(context)
         formatted_time = '%s %s' % (naturalday(time), time.strftime('%H:%M:%S'))
         formatted_time = mark_safe(formatted_time)
         return formatted_time

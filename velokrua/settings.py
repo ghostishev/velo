@@ -37,8 +37,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'django.contrib.admindocs',
+    'django.contrib.humanize',
     'velo',
-    'registration'
+    'registration',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.openid',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.twitter',
+
+    # 'django_messages',
+    'nocaptcha_recaptcha',
+
+    'djangobb_forum'
 ]
 
 MIDDLEWARE = [
@@ -49,6 +66,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'djangobb_forum.middleware.LastLoginMiddleware',
+    'djangobb_forum.middleware.UsersOnline',
+    'djangobb_forum.middleware.TimezoneMiddleware',
 ]
 
 ROOT_URLCONF = 'velokrua.urls'
@@ -133,6 +153,9 @@ EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 DEFAULT_FROM_EMAIL = 'info@google.ua'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'velo/static/')
+MEDIA_URL = os.path.join(BASE_DIR, 'velo/media/')
 
 
 try:

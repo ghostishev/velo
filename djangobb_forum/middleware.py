@@ -3,18 +3,19 @@ from datetime import timedelta
 from django.core.cache import cache
 from django.utils import translation, timezone
 from django.conf import settings as global_settings
+from django.utils.deprecation import MiddlewareMixin
 import pytz
 
 from djangobb_forum import settings as forum_settings
 
 
-class LastLoginMiddleware(object):
+class LastLoginMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if request.user.is_authenticated():
             cache.set('djangobb_user%d' % request.user.id, True, forum_settings.USER_ONLINE_TIMEOUT)
 
 
-class ForumMiddleware(object):
+class ForumMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if request.user.is_authenticated():
             profile = request.user.forum_profile
@@ -30,7 +31,7 @@ class ForumMiddleware(object):
                 request.LANGUAGE_CODE = translation.get_language()
 
 
-class UsersOnline(object):
+class UsersOnline(MiddlewareMixin):
     def process_request(self, request):
         now = timezone.now()
         delta = now - timedelta(seconds=forum_settings.USER_ONLINE_TIMEOUT)
@@ -55,7 +56,7 @@ class UsersOnline(object):
         cache.set('djangobb_guests_online', guests_online, 60*60*24)
 
 
-class TimezoneMiddleware(object):
+class TimezoneMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if request.user.is_authenticated():
             profile = request.user.forum_profile
