@@ -240,3 +240,20 @@ TD DIV.djangobb_column {
 }
 
 SPAN.byuser {color: silver;}
+
+div.custom_page.login li {
+    color: #a94442;
+    background-color: #f2dede;
+    list-style-type: none;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.helptext {
+    font-style: italic;
+    color: darkgray;
+    font-size: small;
+    display:inline-block
+}

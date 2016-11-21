@@ -29,10 +29,10 @@ urlpatterns = [
     url(r'^nav', nav, name='navigation'),
     url(r'^download/(.+)$', download, name='download'),
     url(r'^trips/(.+)?', trip, name='trip'),
-    url(r'^signin$', signin, name='signin'),
 
     # Apps
     # (r'^forum/', include('djangobb_forum.urls', namespace='djangobb'), name='forum'),
     # url(r'^$', home, name='forum')
-    url('', include('django.contrib.auth.urls')),
+    # url('', include('django.contrib.auth.urls')),
+    url('', include('registration.urls')),
 ]

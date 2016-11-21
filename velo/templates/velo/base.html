@@ -75,7 +75,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
                                     class="icon-user"></i> {{ request.user.username }} <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{% url 'logout' %}?next={{ request.path }}">Вихід</a></li>
+                                <li><a href="{% url 'auth_logout' %}?next={{ request.path }}">Вихід</a></li>
                                 <li><a href="/forum/user/{{ request.user.username }}/">Профіль</a></li>
                                 <li><a href="/pm/inbox/">Приватні повідомлення
                                     {% if messages_inbox_count %}
@@ -103,7 +103,7 @@
                         </li>
 
                     {% else %}
-                        <li><a href="{% url 'signin' %}"><i class="icon-user"></i> Вхід</a></li>
+                        <li><a href="{% url 'auth_login' %}?next={{ request.path }}"><i class="icon-user"></i> Вхід</a></li>
                     {% endif %}
 
 

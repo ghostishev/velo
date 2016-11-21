@@ -159,16 +159,3 @@ def shops(request):
     shop_list = Shop.objects.all()
     return render_to_response('velo/shops.html',
                               {'request': request, 'page_title': u'Веломайстерні', 'shops': shop_list})
-
-
-@csrf_protect
-def signin(request):
-    login_form = AuthenticationForm(request)
-    if request.method == 'POST':
-        user = authenticate(username=request.POST['username'], password=request.POST['password'])
-        if user is not None:
-            login(request, user)
-        else:
-            pass
-
-    return render(request, 'velo/sign_in.html', {'login_form': login_form})

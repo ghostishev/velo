@@ -1,12 +1,15 @@
 {% extends 'velo/base.html' %}
 {% block content %}
-    <div class="custom_page">
+    <div class="custom_page login">
+        <form class="login" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Вхід</button>
+        </form>
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-    <button type="submit">Вхід</button>
-    </form>
+        <a href="{% url 'auth_password_reset' %}">Відновити пароль</a>
+        <br>
+        <a href="{% url 'registration_register' %}">Зареєструватися</a>
     </div>
 
 {% endblock %}
