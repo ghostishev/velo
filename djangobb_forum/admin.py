@@ -17,7 +17,7 @@ class BaseModelAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(BaseModelAdmin):
-    list_display = ['name', 'position', 'forum_count']
+    list_display = ['name', 'position', 'forum_count', 'for_club_only']
 
 class ForumAdmin(BaseModelAdmin):
     list_display = ['name', 'category', 'position', 'topic_count']
@@ -38,7 +38,7 @@ class PostAdmin(BaseModelAdmin):
     raw_id_fields = ['topic', 'user', 'updated_by']
 
 class ProfileAdmin(BaseModelAdmin):
-    list_display = ['user', 'status', 'time_zone', 'location', 'language']
+    list_display = ['user', 'status', 'time_zone', 'location', 'language', 'in_club']
     raw_id_fields = ['user']
 
 class PostTrackingAdmin(BaseModelAdmin):

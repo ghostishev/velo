@@ -47,7 +47,7 @@ def index(request, full=True):
     _forums = Forum.objects.all()
     user = request.user
     if not user.is_superuser:
-        user_groups = user.groups.all() or [] # need 'or []' for anonymous user otherwise: 'EmptyManager' object is not iterable
+        user_groups = user.groups.all() or []  # need 'or []' for anonymous user otherwise: 'EmptyManager' object is not iterable
         _forums = _forums.filter(Q(category__groups__in=user_groups) | Q(category__groups__isnull=True))
 
     _forums = _forums.select_related('last_post__topic', 'last_post__user', 'category')
@@ -64,14 +64,14 @@ def index(request, full=True):
     cats = sorted(cats.values(), key=cmpkey)
 
     to_return = {'cats': cats,
-                'posts': Post.objects.count(),
-                'topics': Topic.objects.count(),
-                'users': User.objects.count(),
-                'users_online': users_online,
-                'online_count': users_count,
-                'guest_count': guest_count,
-                'last_user': User.objects.latest('date_joined'),
-                }
+                 'posts': Post.objects.count(),
+                 'topics': Topic.objects.count(),
+                 'users': User.objects.count(),
+                 'users_online': users_online,
+                 'online_count': users_count,
+                 'guest_count': guest_count,
+                 'last_user': User.objects.latest('date_joined'),
+                 }
     if full:
         return render(request, 'djangobb_forum/index.html', to_return)
     else:
@@ -121,10 +121,10 @@ def search(request):
 
     def _render_search_form(form=None):
         return render(request, 'djangobb_forum/search_form.html', {'categories': Category.objects.all(),
-                'form': form,
-                })
+                                                                   'form': form,
+                                                                   })
 
-    if not 'action' in request.GET:
+    if 'action' not in request.GET:
         return _render_search_form(form=PostSearchForm())
 
     if request.GET.get("show_as") == "posts":

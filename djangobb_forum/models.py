@@ -54,6 +54,7 @@ class Category(models.Model):
     name = models.CharField(_('Name'), max_length=80)
     groups = models.ManyToManyField(Group, blank=True, verbose_name=_('Groups'), help_text=_('Only users from these groups can see this category'))
     position = models.IntegerField(_('Position'), blank=True, default=0)
+    for_club_only = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['position']
@@ -82,6 +83,11 @@ class Category(models.Model):
                 if not self.groups.filter(user__pk=user.id).exists():
                     return False
             else:
+                return False
+        if self.for_club_only:
+            if not user.is_authenticated():
+                return False
+            elif not user.forum_profile.in_club:
                 return False
         return True
 
@@ -316,6 +322,7 @@ class Profile(models.Model):
     auto_subscribe = models.BooleanField(_('Auto subscribe'), help_text=_("Auto subscribe all topics you have created or reply."), blank=True, default=False)
     markup = models.CharField(_('Default markup'), max_length=15, default=forum_settings.DEFAULT_MARKUP, choices=MARKUP_CHOICES)
     post_count = models.IntegerField(_('Post count'), blank=True, default=0)
+    in_club = models.BooleanField(default=False)
 
     objects = ProfileManager()
 
