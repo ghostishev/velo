@@ -2,3 +2,7 @@
 .env/
 .idea/
 settings_local.py
+djangobb_forum/__pycache__/
+djangobb_forum/migrations/__pycache__/
+djangobb_forum/templatetags/__pycache__/
+velo/media/

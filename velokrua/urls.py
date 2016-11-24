@@ -24,14 +24,22 @@ from velo.views import *
 from djangobb_forum import settings as forum_settings
 from djangobb_forum.sitemap import SitemapForum, SitemapTopic
 
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'news', ApiNews)
+
 sitemaps = {
     'forum': SitemapForum,
     'topic': SitemapTopic,
 }
 
 urlpatterns = [
+    url(r'^api/', include(router.urls)),
+
     url(r'^admin/', admin.site.urls),
-    url(r'^(?:page/)?(\d+)?$', home, name='home'),
+    url(r'^$', app, name='home'),
+    # url(r'^news/(\d+)?$', ApiNews),
     url(r'^calendar', calendar, name='calendar'),
     url(r'^about', about, name='about'),
     # #    url(r'^forum', 'velo.content.views.forum', name='forum'),

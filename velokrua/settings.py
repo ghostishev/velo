@@ -55,7 +55,9 @@ INSTALLED_APPS = [
     # 'django_messages',
     'nocaptcha_recaptcha',
 
-    'djangobb_forum'
+    'djangobb_forum',
+
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -156,6 +158,11 @@ DEFAULT_FROM_EMAIL = 'info@google.ua'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'velo/static/')
 MEDIA_URL = os.path.join(BASE_DIR, 'velo/media/')
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 5
+}
 
 
 try:

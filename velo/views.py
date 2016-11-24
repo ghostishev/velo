@@ -3,45 +3,63 @@ import datetime
 from django.shortcuts import render_to_response, render
 from django.http import JsonResponse
 from velo.models import *
+from velo.serializers import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from velokrua.settings import NEWS_ON_PAGE, NAVFILES_LOC
 from collections import OrderedDict
-from django.contrib.auth.forms import AuthenticationForm
-from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import authenticate, login
+from rest_framework import viewsets
 
 
-def home(request, page=None):
-    if page is None:
-        page = 1
-    elif page.isdigit():
-        page = int(page)
-    news = News.objects.all()
-    paginator = Paginator(news, NEWS_ON_PAGE)
+# def home(request, page=None):
+#     if page is None:
+#         page = 1
+#     elif page.isdigit():
+#         page = int(page)
+#     news = News.objects.all()
+#     paginator = Paginator(news, NEWS_ON_PAGE)
+#
+#     try:
+#         current_page = paginator.page(page)
+#         news = current_page.object_list
+#     except PageNotAnInteger:
+#         # If page is not an integer, deliver first page.
+#         current_page = paginator.page(page)
+#     except EmptyPage:
+#         # If page is out of range (e.g. 9999), deliver last page of results.
+#         current_page = paginator.page(paginator.num_pages)
+#
+#     navigation = {
+#         'has_previous': current_page.has_previous(),
+#         'has_next': current_page.has_next(),
+#     }
+#     if navigation['has_previous']:
+#         navigation['previous_page'] = current_page.previous_page_number()
+#     if navigation['has_next']:
+#         navigation['next_page'] = current_page.next_page_number()
+#
+#     news = NewsSerializer(data=news[0])
+#
+#     context = {
+#         # 'request': request,
+#            'page_title': u'Кіровоградський велоклуб "Там Де Ми"',
+#            'news': NewsSerializer(news).data,
+#            'navigation': navigation
+#            }
+#
+#     news.is_valid()
+#
+#     return JsonResponse({'news': news.data})
 
-    try:
-        current_page = paginator.page(page)
-        news = current_page.object_list
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        current_page = paginator.page(page)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        current_page = paginator.page(paginator.num_pages)
+    # return render_to_response('velo/home.html', context)
 
-    navigation = {
-        'has_previous': current_page.has_previous(),
-        'has_next': current_page.has_next(),
-    }
-    if navigation['has_previous']:
-        navigation['previous_page'] = current_page.previous_page_number()
-    if navigation['has_next']:
-        navigation['next_page'] = current_page.next_page_number()
 
-    context = {'request': request, 'page_title': u'Кіровоградський велоклуб "Там Де Ми"', 'news': news,
-               'navigation': navigation}
+def app(request):
+    return render_to_response('app.html')
 
-    return render_to_response('velo/home.html', context)
+
+class ApiNews(viewsets.ModelViewSet):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
 
 
 def online_map(request):
